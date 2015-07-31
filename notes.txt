@@ -1,0 +1,11 @@
+PassportJS
+Module that makes it easy to implement login via:
+- Facebook (does not send data to facebook unless you choose to, but you can access some of the user's basic facebook info)
+- Twitter (does not send data to twitter unless you choose to)
+- Google
+- Local Login (Your Site)
+
+Local login is when you are handling usernames and passwords
+- More insecure, so you need to encrypt passwords in the DB using SSL
+- If you are taking credit cards, use Stripe.
+- Use OAuth because its more secure than your local will ever be
