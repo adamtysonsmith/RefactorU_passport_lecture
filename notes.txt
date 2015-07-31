@@ -9,3 +9,14 @@ Local login is when you are handling usernames and passwords
 - More insecure, so you need to encrypt passwords in the DB using SSL
 - If you are taking credit cards, use Stripe.
 - Use OAuth because its more secure than your local will ever be
+
+There are several passport modules you may need:
+passport
+passport-local
+passport-twitter
+passport-google
+passport-facebook
+
+express-session
+bcrypt
+cookie-parser

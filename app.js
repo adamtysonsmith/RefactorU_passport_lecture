@@ -41,10 +41,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // Add in the cookieParser and flash middleware so we can
 // use them later
-app.use(cookieParser());
+app.use(cookieParser()); // Grabs cookies from the browser and interprets them
 app.use(flash());
 
-// Initialize the express session. Needs to be given a secret property.
+// Initialize the express session. This is setting up how your session works
+// Needs to be given a secret property.
 // Also requires the resave option (will not force a resave of session if not modified)
 // as well as saveUninitialized(will not automatically create empty data)
 app.use(session({
@@ -57,7 +58,21 @@ app.use(session({
 app.use(passport.initialize());
 
 // Hook in the passport session management into the middleware chain.
+// This means our express sessions are hooked into our passport sessions
 app.use(passport.session());
+
+
+// Example of custom middleware - Not related to this app
+// middleware like this should be super generic and reusable, decoupled
+//var middle = function(req, res){
+//    if(userLoggedIn){
+//        next() // Execute the next routeHandler
+//    }
+//    else {
+//        res.redirect('/login'); // Else redirect back to login
+//    }
+//}
+//app.get('/users', middle, indexController.someRouteHandler);
 
 
 // Our get request for viewing the login page

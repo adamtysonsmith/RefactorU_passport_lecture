@@ -80,6 +80,7 @@ module.exports = {
   ensureAuthenticated: function(req, res, next){
 
     // If the current user is logged in...
+    // isAuthenticated is a provided method on the request - from Passport
     if(req.isAuthenticated()){
 
       // Middleware allows the execution chain to continue.

@@ -30,9 +30,12 @@ var userSchema = mongoose.Schema({
  * callback will be called whenever a new user is about to
  * be saved to the database so that we can encrypt the password.
  */
+
+// .pre() means do this callback RIGHT before the save()
 userSchema.pre('save', function(next){
 
   // First, check to see if the password has been modified. If not, just move on.
+  // 'this' is referring the current document, mongoose gives us the isModified method
   if(!this.isModified('password')) return next();
 
   // Store access to "this", which represents the current user document
@@ -57,21 +60,32 @@ userSchema.pre('save', function(next){
       user.password = hash;
 
       // Allow execution to move to the next middleware
+      // This actually performs the save()
       return next();
     });
   });
 });
 
 
-/**
+/*
  * Method on the user schema that allows us to hook into the
  * bcrypt system to compare an encrypted password to a given
  * password. This process doesn't involve unencrypting the stored
  * password, but rather encrypts the given one in the same way and
  * compares those values
  */
+
+// We are defining a comparePassword method on the schema.methods which affects all documents in the DB
+// Similar to Object.prototype ==> Schema.methods
+// candidatePassword is what the user typed in for their password
 userSchema.methods.comparePassword = function(candidatePassword, next){
   // Use bcrypt to compare the unencrypted value to the encrypted one in the DB
+    
+  // this.password refers to the user when we call User.comparePassword() in our controller
+    // Users.findOne({whatever}, function(err, docs){
+    //    User.comparePassword()
+    // });
+    
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
     // If there was an error, allow execution to move to the next middleware
     if(err) return next(err);
@@ -80,7 +94,7 @@ userSchema.methods.comparePassword = function(candidatePassword, next){
     // it of the match status (true or false)
     return next(null, isMatch);
   });
-};
+}
 
 // Our user model
 var User = mongoose.model('user', userSchema);
